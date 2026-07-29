@@ -24,6 +24,19 @@ Every unit is labelled `measured` (published result, cited and linked), `vendor 
 
 Primary sources used: Liu et al. 2023 (lost in the middle), Lu et al. 2021 (prompt order sensitivity), Zhao et al. 2021 (calibrate before use), Zheng et al. 2023 (multiple-choice selection bias), Jang et al. 2022 (negated prompts), Min et al. 2022 (role of demonstrations), plus Anthropic's published prompting guidance. All were fetched and verified rather than recalled.
 
+## Field notes
+
+Three units (L5, A4, D2) carry a dated **field note** from a drill actually run against a live model, and `drills/` holds the runnable script plus raw results.
+
+The first run (2026-07-29, `llama-3.1-8b-instant`, temp 0) is a **null**: five orderings of an 8-shot classifier over 20 subtle held-out reviews all scored 16/20 — accuracy spread 0.0 points. A sixth arm repeating ordering A returned byte-identical predictions, so the null is real rather than noise-masked. Only 1/20 items varied with ordering at all, and that variation was between two wrong answers.
+
+Two things came out of it, both now in the app:
+
+- **The drill's own metric was inadequate.** "Accuracy spread is your prompt's real error bar" is wrong as a sole measure — spread can be exactly zero while outputs still move. Per-item flip count is now part of the drill.
+- **An unplanned A4 result.** The classifier prompt said "reply with exactly one word: POSITIVE or NEGATIVE"; on 3/20 items (15%) the model replied `NEUTRAL` — a label absent from both the instruction and all eight examples. Demonstrations *establish* a label space; they do not *enforce* one.
+
+Nulls stay in. A drill that reproduces nothing is a result about scale and task, and deleting it would make the catalog look better than the evidence.
+
 `D6 — Over-constraint` is not from the literature. It comes from a parallel-agent experiment in the companion project, where two agents given non-jointly-satisfiable formatting requirements each silently dropped the other's.
 
 ## Install on mobile

@@ -167,6 +167,11 @@
   .drill p { font-size: 15.5px; margin: 0 0 7px; }
   .drill p:last-child { margin-bottom: 0; }
   .ab { font-family: var(--mono); font-size: 13px; display: block; margin: 4px 0; padding-left: 16px; text-indent: -16px; }
+  .fieldnote { border: 1px dashed var(--rule-strong); border-left: 3px solid var(--fam-color); border-radius: 3px; padding: 11px 12px; margin: 0 0 10px; }
+  .fieldnote-label { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--fam-color); margin: 0 0 5px; }
+  .fieldnote p { font-size: 15px; margin: 0 0 7px; }
+  .fieldnote p:last-child { margin-bottom: 0; }
+  .fieldnote .num { font-family: var(--mono); font-size: 13px; }
   .mod-check { font-size: 14.5px; color: var(--ink-soft); margin: 0 0 10px; }
   .mod-done-toggle {
     font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
@@ -220,7 +225,7 @@
     <h1>Prompt IDKs</h1>
     <p class="dek">The atomic units a prompt is assembled from — sorted into three families: <strong>Location</strong>, <strong>Action</strong>, <strong>Detail</strong>. Text-first, with an image-prompting track alongside.</p>
     <dl class="docblock">
-      <div><dt>Rev</dt><dd>01</dd></div>
+      <div><dt>Rev</dt><dd>02</dd></div>
       <div><dt>Date</dt><dd>2026-07-29</dd></div>
       <div><dt>Status</dt><dd>Interactive</dd></div>
       <div><dt>Units</dt><dd>18 text + 3 image</dd></div>
@@ -383,7 +388,7 @@
         <div class="mod-num">L5</div>
         <div>
           <p class="mod-title">Order</p>
-          <p class="mod-meta">measured — Lu et al. 2021 · Zhao et al. 2021 · Zheng et al. 2023</p>
+          <p class="mod-meta">measured — Lu et al. 2021 · Zhao et al. 2021 · Zheng et al. 2023 · local null 2026-07-29</p>
           <div class="mod-body"><p>The sequence of interchangeable items: few-shot examples, candidate options, ranked lists. Treated as cosmetic, measured as decisive — reordering examples alone has moved classification accuracy from near-SOTA to near-chance. Models also carry standing biases: toward later answers, and toward particular option letters independent of content.</p></div>
           <p class="knob"><b>Knob:</b> permutation of an unordered set.</p>
           <p class="tell"><b>Failure signature</b> Two runs that differ only in example order disagree. If you have never checked, you do not know whether your prompt's performance is a property of the prompt or of one lucky ordering.</p>
@@ -392,9 +397,15 @@
             <p>Take any few-shot prompt with 4+ examples.</p>
             <span class="ab">A — your current order.</span>
             <span class="ab">B–E — four random permutations, everything else identical.</span>
-            <p>Run the same 20 test inputs through all five. The spread across permutations is your prompt's real error bar.</p>
+            <p>Run the same 20 test inputs through all five. Report two numbers: the accuracy spread <em>and</em> the count of individual items whose label changed. They can disagree — see below.</p>
           </div>
-          <p class="mod-check"><b>Done when:</b> you can quote a spread, and you know whether your headline number was a lucky draw.</p>
+          <div class="fieldnote">
+            <p class="fieldnote-label">Field note — drill run 2026-07-29 · null result</p>
+            <p>Ran exactly as written: <span class="num">llama-3.1-8b-instant</span>, temperature 0, 8 balanced examples, 20 deliberately subtle held-out reviews, five orderings. <strong>Accuracy spread: 0.0 points.</strong> All five orderings scored 16/20. A sixth arm repeated ordering A and returned byte-identical predictions, so the null is real and not a determinism artefact.</p>
+            <p>Only <span class="num">1/20</span> items varied with ordering at all — and that variation was between two <em>wrong</em> answers, so it never touched the score. The published effect is real; it did not show up here, at this scale, on this task.</p>
+            <p><strong>What the run changed about this card:</strong> the drill originally said accuracy spread was "your prompt's real error bar." That is wrong as a sole metric — spread can be exactly zero while the model's actual outputs still move. Per-item flip count is the more sensitive instrument and is now part of the drill.</p>
+          </div>
+          <p class="mod-check"><b>Done when:</b> you can quote both a spread and a flip count, and you know whether your headline number was a lucky draw.</p>
           <button class="mod-done-toggle" data-toggle>Mark done</button>
         </div>
       </div>
@@ -487,7 +498,7 @@
         <div class="mod-num">A4</div>
         <div>
           <p class="mod-title">Output contract</p>
-          <p class="mod-meta">craft — mechanically enforceable</p>
+          <p class="mod-meta">craft — mechanically enforceable · measured here 2026-07-29</p>
           <div class="mod-body"><p>The shape the answer must arrive in: a schema, a fixed set of fields, a single token. This is an Action unit, not a Detail one — the distinction matters because a contract can be <em>enforced</em> (structured outputs, tool calls, a parser that rejects) rather than requested. Requesting JSON and enforcing JSON are different units with different failure rates.</p></div>
           <p class="knob"><b>Knob:</b> requested vs enforced, and how tight the shape is.</p>
           <p class="tell"><b>Failure signature</b> Valid content wrapped in prose you have to strip. Or worse: it parses nine times out of ten, so the failure only appears in production.</p>
@@ -496,6 +507,12 @@
             <span class="ab">A — "return JSON with fields x, y, z".</span>
             <span class="ab">B — the same, enforced via structured output or a tool schema.</span>
             <p>100 runs each if you can afford it, and count parse failures. The rate in A is the number people quote as "basically always works".</p>
+          </div>
+          <div class="fieldnote">
+            <p class="fieldnote-label">Field note — measured 2026-07-29 · found by accident</p>
+            <p>This number came out of running the <em>L5</em> drill, not this one. The classifier prompt there said: "Reply with exactly one word: POSITIVE or NEGATIVE." On <span class="num">3/20</span> items — <span class="num">15%</span> — the model replied <code>NEUTRAL</code>, a label that appears nowhere in the instruction or in any of the eight examples.</p>
+            <p>All three were genuinely borderline reviews ("It's fine. I guess. For the price."). Faced with an input that fits neither offered label, the model invented a third rather than picking the closer one. A requested contract has no mechanism to prevent that; an enforced one does.</p>
+            <p><strong>Worth noting where it was found:</strong> a drill aimed at one family surfaced a larger effect in another. Zero-point spread on the unit under test, 15% contract violation sitting underneath it.</p>
           </div>
           <p class="mod-check"><b>Done when:</b> you have a parse-failure rate for the requested version, in numbers.</p>
           <button class="mod-done-toggle" data-toggle>Mark done</button>
@@ -581,6 +598,11 @@
             <span class="ab">B — three examples, labels deliberately shuffled, format identical.</span>
             <span class="ab">C — zero examples, format described in prose.</span>
             <p>Replicating the published result on your own task is the point. If B ≈ A and both beat C, examples are doing format work, not teaching.</p>
+          </div>
+          <div class="fieldnote">
+            <p class="fieldnote-label">Field note — 2026-07-29 · a limit on the claim</p>
+            <p>"Demonstrations supply the label space" is the published finding, and it is easy to over-read as <em>guarantee</em> the label space. In our own run, eight examples using only <code>POSITIVE</code> and <code>NEGATIVE</code> still left the model emitting <code>NEUTRAL</code> on 15% of borderline inputs (see A4).</p>
+            <p>So: demonstrations <em>establish</em> a label space, they do not <em>enforce</em> one. If the space must hold, that is an Action-family job, not a Detail-family one.</p>
           </div>
           <p class="mod-check"><b>Done when:</b> you have run the label-corruption arm yourself and seen what it does on your task.</p>
           <button class="mod-done-toggle" data-toggle>Mark done</button>
@@ -769,12 +791,13 @@
     <h2>What is borrowed, what is mine, what is unproven</h2>
     <p><strong>Borrowed:</strong> every result in the grounding section, cited inline and linked to the primary source. The vendor guidance is Anthropic's published prompting documentation, quoted rather than paraphrased where a number is involved.</p>
     <p><strong>Mine:</strong> the Location / Action / Detail split itself, the unit list underneath it, the failure signatures, and the drills. None of that is a research result — it is a filing system, and its only defence is that it makes failures nameable and differences testable.</p>
+    <p><strong>Field notes:</strong> three units (L5, A4, D2) carry a dated field note from a drill actually run against a live model. One of them is a <em>null</em> — the published order-sensitivity effect did not reproduce at our scale, and the card says so instead of quietly dropping the run. Field notes record what the run changed about the card, including when it proved the drill's own metric inadequate.</p>
     <p><strong>Unproven, and marked:</strong> six of the eighteen text units carry <code>folklore</code> or <code>craft</code> rather than a citation. That is not a gap to be filled with a citation that nearly fits — it is the backlog. Each drill is written so its unit can be moved from <code>folklore</code> to <code>measured</code> by running it, which is the point of the format.</p>
     <p><strong>Companion:</strong> this sits alongside the Agent Operations curriculum. That one is about directing agents; this one is about the units the direction is made of. D6 comes from a parallel-agent experiment run under the other project — the two feed each other.</p>
   </section>
 
   <footer>
-    Prompt IDKs · Rev 01 · 2026-07-29 · offline-capable, installable, no build step · progress stored per-device in localStorage
+    Prompt IDKs · Rev 02 · 2026-07-29 · offline-capable, installable, no build step · progress stored per-device in localStorage
   </footer>
 
 </div>

@@ -1,0 +1,303 @@
+{
+  "model": "llama-3.1-8b-instant",
+  "results": [
+    {
+      "arm": "A",
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "acc": 80.0,
+      "preds": [
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "?",
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE"
+      ]
+    },
+    {
+      "arm": "B",
+      "order": [
+        2,
+        0,
+        4,
+        1,
+        7,
+        3,
+        5,
+        6
+      ],
+      "acc": 80.0,
+      "preds": [
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "?",
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE"
+      ]
+    },
+    {
+      "arm": "C",
+      "order": [
+        0,
+        4,
+        3,
+        5,
+        7,
+        6,
+        1,
+        2
+      ],
+      "acc": 80.0,
+      "preds": [
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "?",
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE"
+      ]
+    },
+    {
+      "arm": "D",
+      "order": [
+        0,
+        3,
+        4,
+        1,
+        2,
+        6,
+        7,
+        5
+      ],
+      "acc": 80.0,
+      "preds": [
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "?",
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE"
+      ]
+    },
+    {
+      "arm": "E",
+      "order": [
+        1,
+        4,
+        2,
+        3,
+        7,
+        5,
+        6,
+        0
+      ],
+      "acc": 80.0,
+      "preds": [
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "?",
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE"
+      ]
+    },
+    {
+      "arm": "A_repeat",
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "acc": 80.0,
+      "preds": [
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "?",
+        "POSITIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE",
+        "NEGATIVE",
+        "?",
+        "POSITIVE",
+        "NEGATIVE",
+        "POSITIVE"
+      ]
+    }
+  ],
+  "test": [
+    [
+      "I was ready to hate this and I don't.",
+      "POSITIVE"
+    ],
+    [
+      "Not the disaster the reviews promised.",
+      "POSITIVE"
+    ],
+    [
+      "Sure, if you enjoy waiting on hold for an hour.",
+      "NEGATIVE"
+    ],
+    [
+      "It's fine. I guess. For the price.",
+      "POSITIVE"
+    ],
+    [
+      "Nothing wrong with it, nothing right either.",
+      "NEGATIVE"
+    ],
+    [
+      "Took a while to click, but now I'd not go back.",
+      "POSITIVE"
+    ],
+    [
+      "Would recommend, with reservations about the hinge.",
+      "POSITIVE"
+    ],
+    [
+      "Beautiful object. Completely useless.",
+      "NEGATIVE"
+    ],
+    [
+      "Worked perfectly until it didn't, which was Tuesday.",
+      "NEGATIVE"
+    ],
+    [
+      "Better than my last one, and that's not saying much.",
+      "POSITIVE"
+    ],
+    [
+      "I've stopped noticing it, which is the highest praise.",
+      "POSITIVE"
+    ],
+    [
+      "Every update makes it slightly worse.",
+      "NEGATIVE"
+    ],
+    [
+      "Not bad for a first attempt from this company.",
+      "POSITIVE"
+    ],
+    [
+      "Can't fault the build. Can't forgive the software.",
+      "NEGATIVE"
+    ],
+    [
+      "Does one thing, does it without fuss.",
+      "POSITIVE"
+    ],
+    [
+      "The manual is longer than the warranty is useful.",
+      "NEGATIVE"
+    ],
+    [
+      "Honestly surprised by how little I use it.",
+      "NEGATIVE"
+    ],
+    [
+      "My only complaint is that I didn't buy two.",
+      "POSITIVE"
+    ],
+    [
+      "Fast shipping. That's the compliment.",
+      "NEGATIVE"
+    ],
+    [
+      "It has never once let me down.",
+      "POSITIVE"
+    ]
+  ]
+}

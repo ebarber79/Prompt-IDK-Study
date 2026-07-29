@@ -1,4 +1,4 @@
-const CACHE = 'pe-idk-v1';
+const CACHE = 'pe-idk-v2';
 const PRECACHE = [
   './',
   './index.html',
