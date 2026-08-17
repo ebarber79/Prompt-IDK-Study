@@ -92,6 +92,15 @@ import urllib.error
 import urllib.request
 
 MODEL = os.environ.get("DRILL_MODEL", "openai/gpt-oss-20b")
+
+# Seconds between calls. The binding limit on Groq's free tier is TOKENS PER
+# MINUTE (8000), not requests -- 1000 req/day is never the wall. A reasoning
+# model spends ~1200-1600 tokens per call of this drill (most of it <think>),
+# so it fits roughly 5-6 calls/minute and needs ~12s of spacing. gpt-oss
+# answers without a scratchpad and runs fine at 2s. Backoff cannot rescue a
+# throughput mismatch: on 2026-08-17 a 2s pace against qwen 429'd on every
+# single call and made no progress at all, while retrying politely.
+PACE = float(os.environ.get("DRILL_PACE", "12" if "qwen" in MODEL else "2"))
 URL = "https://api.groq.com/openai/v1/chat/completions"
 KEY = os.environ["GROQ_API_KEY"]
 
@@ -234,6 +243,31 @@ ABSENCE = re.compile(
 
 CANONICAL = re.compile(r"^NOT_STATED\.?$")
 
+THINK = re.compile(r"<think>.*?</think>\s*", re.S | re.I)
+
+
+def strip_reasoning(text):
+    """Transport-level normalisation, applied to EVERY model identically.
+
+    Reasoning models (qwen3.6) return their scratchpad inside <think> tags in
+    the same `content` field as the answer; gpt-oss does not. Without this the
+    parser reads the first `field:` line it sees, which lands INSIDE the
+    reasoning -- the 2026-08-17 qwen run scored format 0/12 on all seven arms
+    and produced 349-character "absence markers" that were reasoning prose.
+    Those numbers were void.
+
+    This is deliberately a transport fix rather than a looser scorer, so the
+    same scorer judges every model. It is a verified no-op for the runs already
+    banked: 0/144 gpt-oss completions contain a <think> tag, against 84/84 for
+    qwen, so the 20b and 120b results are unaffected and were not re-run.
+
+    An unterminated <think> (truncated completion) leaves the text alone, and
+    the six-line format check then fails honestly rather than silently parsing
+    scratchpad.
+    """
+    return THINK.sub("", text).strip()
+
+
 def call(prompt, record, attempt=0):
     body = json.dumps({
         "model": MODEL,
@@ -252,15 +286,38 @@ def call(prompt, record, attempt=0):
     )
     try:
         with urllib.request.urlopen(req, timeout=90) as resp:
-            return json.load(resp)["choices"][0]["message"]["content"].strip()
+            return strip_reasoning(
+                json.load(resp)["choices"][0]["message"]["content"])
     except urllib.error.HTTPError as exc:
+        if exc.code == 429:
+            # The per-DAY token cap is reported ONLY in the body. The response
+            # headers advertise x-ratelimit-limit-tokens: 8000, which is the
+            # per-MINUTE bucket, and it reads as healthy while TPD is exhausted
+            # -- on 2026-08-17 that sent three rounds of pacing and backoff
+            # "fixes" at a quota wall no amount of waiting would clear.
+            body = exc.read().decode(errors="replace")
+            if "per day" in body.lower() or "TPD" in body:
+                raise SystemExit(
+                    f"\n  !! DAILY TOKEN CAP for {MODEL} -- stopping, not retrying.\n"
+                    f"  !! {body[:300]}\n"
+                    f"  !! Resume tomorrow; completed arms are already checkpointed.")
+        # Per-minute bucket: clears in ~60s, so a short linear wait is right.
+        # An exponential ramp to 120s is worse than useless -- on 2026-08-17 a
+        # 3**attempt/120s ceiling spent 16 minutes asleep without finishing an
+        # arm, at zero CPU, which from outside looks exactly like a hang.
+        # Retries are announced for the same reason: silence and a wedged
+        # process are indistinguishable.
         if exc.code in (429, 500, 502, 503) and attempt < 8:
-            time.sleep(min(60, 2 ** attempt))
+            wait = min(45, 15 * (attempt + 1))
+            print(f"      [{exc.code}] retry {attempt + 1}/8 in {wait}s", flush=True)
+            time.sleep(wait)
             return call(prompt, record, attempt + 1)
         raise
     except (urllib.error.URLError, ConnectionResetError, TimeoutError):
         if attempt < 8:
-            time.sleep(min(30, 2 ** attempt))
+            wait = min(30, 10 * (attempt + 1))
+            print(f"      [net] retry {attempt + 1}/8 in {wait}s", flush=True)
+            time.sleep(wait)
             return call(prompt, record, attempt + 1)
         raise
 
@@ -326,7 +383,7 @@ def run_arm(name, prompt):
         canonical += s["canonical"]
         markers += s["markers"]
         fabs += s["fabricated"]
-        time.sleep(1.2)
+        time.sleep(PACE)
 
     total_fields = len(RECORDS) * len(FIELDS)
     summary = {
@@ -360,9 +417,30 @@ def main():
     print(f"model={MODEL}  temp=0  {len(RECORDS)} records  "
           f"{absent_total} gold-absent field slots\n")
 
-    results = {name: run_arm(name, prompt) for name, prompt in ARMS.items()}
-    print("  -- control --")
-    results["SPEC_repeat"] = run_arm("SPEC_repeat", ARMS["SPEC"])
+    out = f"drills/D6_spec_vs_prose_results.{MODEL.replace('/', '-')}.json"
+    results = {}
+
+    def checkpoint():
+        """Dump after EVERY arm. The 2026-08-17 qwen re-run lost four completed
+        arms to a 429 on the fifth, because the only write was at the end."""
+        with open(out, "w") as fh:
+            json.dump({"model": MODEL, "complete": len(results) == len(ARMS) + 1,
+                       "arms_done": sorted(results),
+                       "records": [{"text": t, "gold": g} for t, g in RECORDS],
+                       "results": results}, fh, indent=2)
+
+    for name, prompt in list(ARMS.items()) + [("SPEC_repeat", ARMS["SPEC"])]:
+        if name == "SPEC_repeat":
+            print("  -- control --")
+        try:
+            results[name] = run_arm(name, prompt)
+        except Exception as exc:               # rate limit, network, anything
+            checkpoint()
+            print(f"\n  !! arm {name} aborted: {type(exc).__name__}: {exc}")
+            print(f"  !! {len(results)} arm(s) checkpointed to {out}")
+            print("  !! PARTIAL RUN -- do not report these as a completed drill.")
+            raise SystemExit(1)
+        checkpoint()
 
     print("\n--- result ---")
     s = {k: v["summary"] for k, v in results.items()}
@@ -396,10 +474,7 @@ def main():
         for f, v in results["SPEC_ESCAPE"]["fabrications"][:8]:
             print(f"  {f}: {v!r}")
 
-    out = f"drills/D6_spec_vs_prose_results.{MODEL.replace('/', '-')}.json"
-    with open(out, "w") as fh:
-        json.dump({"model": MODEL, "records": [{"text": t, "gold": g} for t, g in RECORDS],
-                   "results": results}, fh, indent=2)
+    checkpoint()
     print(f"\nraw: {out}")
 
 
