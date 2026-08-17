@@ -107,13 +107,16 @@ import urllib.request
 
 MODEL = os.environ.get("DRILL_MODEL", "openai/gpt-oss-20b")
 
-# Seconds between calls. The binding limit on Groq's free tier is TOKENS PER
-# MINUTE (8000), not requests -- 1000 req/day is never the wall. A reasoning
-# model spends ~1200-1600 tokens per call of this drill (most of it <think>),
-# so it fits roughly 5-6 calls/minute and needs ~12s of spacing. gpt-oss
-# answers without a scratchpad and runs fine at 2s. Backoff cannot rescue a
-# throughput mismatch: on 2026-08-17 a 2s pace against qwen 429'd on every
-# single call and made no progress at all, while retrying politely.
+# Seconds between calls. Groq's free tier has THREE limits and only two are in
+# the response headers: requests/day (1000, never the wall here), tokens/MINUTE
+# (8000, what PACE is for), and tokens/DAY (200000) -- which appears ONLY in the
+# 429 body. Pacing addresses the per-minute bucket and can do nothing about the
+# daily cap; see the TPD branch in call(), which aborts rather than retrying.
+#
+# A reasoning model spends ~1500 tokens per call of this drill (mostly
+# <think>), so it needs ~12s of spacing to sit inside 8000/min -- and one
+# 84-call sweep costs ~126k, so TWO sweeps exhaust the day. gpt-oss emits no
+# scratchpad, is far cheaper per call, and runs fine at 2s.
 PACE = float(os.environ.get("DRILL_PACE", "12" if "qwen" in MODEL else "2"))
 URL = "https://api.groq.com/openai/v1/chat/completions"
 KEY = os.environ["GROQ_API_KEY"]
