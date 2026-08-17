@@ -71,7 +71,18 @@ OUTCOME (2026-08-17, gpt-oss-20b and gpt-oss-120b, temp 0)
   source (20.7 chars, 5-7 distinct spellings) instead of markers (11.5 chars).
   The escape hatch's real value is machine-readability, not truthfulness.
 
-  MECHANISM: ablating one rule at a time, R5 ("values MUST be taken from the
+  *** THE R5 MECHANISM BELOW IS RETRACTED (same day) ***
+  D6b (drills/D6b_negation_survival.py) shows prompt style makes NO difference:
+  prose with no rules, SPEC, and SPEC minus R5 all fabricate 3/8 on liftable
+  records and 0/8 on fused ones. The ablation below rested on a ONE-record
+  difference, and D6b measures this model's noise floor at +/-1 record -- the
+  same prompt run twice gave 3/8 and 4/8, flipping "Nobody understands the
+  mechanism behind the intermittent 500s" (honest) to "mechanism behind the
+  intermittent 500s" (fabricated) with no rule change at all. What survives is
+  a property of the SOURCE SENTENCE, not the prompt. Kept below as written,
+  because a retracted claim is more useful than a deleted one.
+
+  MECHANISM (RETRACTED): ablating one rule at a time, R5 ("values MUST be taken from the
   record") owns both the single fabrication and the verbosity. R4 does not.
   The anti-hallucination-sounding rule is the one that forbids "unknown" and
   so forces a noun phrase out of a sentence that states ignorance.

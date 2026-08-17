@@ -62,56 +62,80 @@ escape hatch collapses that to 1–2 spellings, 6/7 and 7/7 canonical. So the
 hatch's value is not honesty, it is **machine-readability** — and it still
 leaks about one slot in seven.
 
-**The real D6 result is a single rule.** On 120b, the spec arm turned a record
-reading *"Nobody has yet worked out what triggered it"* into
-`root_cause: what triggered it` — a noun phrase lifted out of a statement of
-ignorance, which a parser reads as a stated cause. It reproduced in the repeat
-arm. Ablating one rule at a time:
+### RETRACTED: "R5 causes the fabrication" (claimed 2026-08-17, withdrawn same day)
 
-| arm | `root_cause` | fabrications |
+The first version of this note reported a mechanism: on 120b, a spec turned
+*"Nobody has yet worked out what triggered it"* into `root_cause: what
+triggered it`, and ablating one rule at a time appeared to pin it on **R5**
+(*"values MUST be taken from the record"*) — the rule that reads as an
+anti-hallucination guardrail. It was a tidy story, it matched the
+pre-registered prediction, and **it was wrong.**
+
+It rested on a single record, where `SPEC` said `what triggered it` and
+`SPEC minus R5` said `undetermined`. One flip, on a model whose temp=0 control
+had *already failed* in that same run. I read a coin toss as an ablation.
+
+`drills/D6b_negation_survival.py` was built to turn that n=1 into a rate: 24
+records on 120b, 8 with ignorance phrased so a noun phrase names the missing
+cause, 8 with the negation fused to the answer slot, 8 with real causes as
+controls.
+
+| arm | liftable-NP records | fused-negation records |
 |---|---|---|
-| PROSE | `unknown` | 0 |
-| SPEC | `what triggered it` | 1 |
-| SPEC minus R4 (*every field MUST be present*) | `what triggered it` | 1 |
-| **SPEC minus R5 (*values MUST be taken from the record*)** | `undetermined` | **0** |
+| PROSE (no spec at all) | 3/8 | 0/8 |
+| SPEC | 3/8 | 0/8 |
+| SPEC minus R5 | 3/8 | 0/8 |
+| SPEC again (same prompt) | **4/8** | 0/8 |
 
-Within this model, R5 owns it: the rule that reads as an anti-hallucination
-guardrail is the one that caused the hallucination. It forbids `unknown`,
-because `unknown` is not in the record, so the model reaches for the nearest
-available noun phrase. Dropping R5 also nearly halved marker verbosity
-(20.7 → 10.9 chars).
+**Prompt style makes no difference whatsoever.** Prose with no rules fabricates
+at the same rate as a six-rule spec, and removing R5 changes nothing. The same
+three records fail in every arm.
 
-**Scope, stated plainly: this is one failure, on one of three models.**
-`gpt-oss-20b` produced zero fabrications in every arm, and so did
-`qwen3.6-27b`. Only `gpt-oss-120b` fell over, and only on one of seven absent
-slots — though it did so in the repeat arm too, and the ablation is clean, so
-it is a real effect rather than noise *within that model*. It is not a measured
-rate, and it is not shown to generalise.
+The last row is the point. `SPEC` and `SPEC_repeat` are the *same prompt* and
+differ by one record, so **the noise floor on this model is ±1** — and the
+entire R5 ablation was a one-record difference. Here is the flip, same record,
+same prompt, same temperature:
 
-Comparing what each model quoted narrows the mechanism usefully. R5's pressure
-to take the value from the record is visible everywhere; whether it yields a
-false value depends on **how much of the negating clause survives extraction**:
+    run 1   Nobody understands the mechanism behind the intermittent 500s   honest
+    run 2   mechanism behind the intermittent 500s                          fabricated
 
-| model | `root_cause` under SPEC | negation survives? |
+That is the D6 result reproduced with no rule change at all.
+
+### What actually survives
+
+Fabrication is a property of **the source sentence**, not the prompt. It
+happens when a statement of ignorance can be extracted from in a way that drops
+the part carrying the ignorance:
+
+| source phrasing | extracted as | |
 |---|---|---|
-| qwen3.6-27b | `Nobody has yet worked out what triggered it` | yes — reads as absent |
-| gpt-oss-120b | `what triggered it` | **no — reads as a stated cause** |
+| "Investigation **continues into** the source of the timeouts" | `source of the timeouts` | ✗ |
+| "Engineers are **still tracing** the origin of the duplicate charges" | `duplicate charges` | ✗ |
+| "The postmortem **has not settled** the trigger for the parser crash" | `parser crash` | ✗ |
+| "**Nobody** has yet worked out what triggered it" | *quoted whole* | ✓ |
+| "The cause **remains unknown**" | `unknown` | ✓ |
 
-Both obeyed R5. One quoted the clause and stayed honest; the other extracted the
-noun phrase and stripped the "nobody has worked out" that carried the meaning.
-So the risk is not "specs cause lies", it is narrower and more useful:
+Two of the three failures contain **no negation word at all** — they express
+ignorance through aspect (*an investigation in progress*). There is no negation
+to preserve, so extraction cannot preserve one. The survivors either carry an
+explicit negative marker (`nobody`, `no one`, `have not`) or fuse the ignorance
+into the answer word itself (`unknown`, `never established`).
 
-> **D6's signature: a rule that forbids the honest answer.** Before adding a
-> MUST, ask what it makes unsayable. If the true answer is "this isn't here",
-> a spec must supply a way to say so — otherwise the model must satisfy the
-> rule from source text, and a short enough extraction drops the negation while
-> satisfying every rule.
+> **Ignorance stated as progress is not stated as ignorance.** "We are still
+> investigating X" and "X is unknown" mean the same thing to a reader and
+> different things to an extractor. The second cannot be quoted into a false
+> claim; the first can, by quoting the X.
 
-The qwen arms above are provisional: its ablation arms never ran (daily token
-cap), and with zero fabrications in its SPEC arm there was nothing for the
-ablation to remove, so completing them would not settle R5 either way. The run
-that would earn the claim is more negated-cause records against `gpt-oss-120b`,
-turning n=1 into a rate.
+Honest limits on that: the design conflated two variables — *liftable noun
+phrase* and *aspectual vs explicit negation* — so it cannot yet separate their
+contributions, and a follow-up should cross them. The rate is 2–3 of 8 rather
+than a firm 3, because hand-checking found the scorer counting
+`trigger for the parser crash (unspecified)` as invented when `(unspecified)`
+signals absence. One model, one task shape.
+
+Both qwen and 20b results above stand — they concern the escape hatch and
+marker variety, which replicate. The qwen arms remain incomplete (daily token
+cap), and completing them would not bear on any of this.
 
 **Two instrument notes, both worth more than the result.**
 
