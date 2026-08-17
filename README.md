@@ -37,6 +37,74 @@ Two things came out of it, both now in the app:
 
 Nulls stay in. A drill that reproduces nothing is a result about scale and task, and deleting it would make the catalog look better than the evidence.
 
+### D6 — Over-constraint, measured (2026-08-17)
+
+D6 was the catalog's weakest card: sourced from a parallel-agent anecdote, no
+citation, no drill. `drills/D6_spec_vs_prose.py` now measures it, on
+`openai/gpt-oss-20b` and `openai/gpt-oss-120b`, temp 0.
+
+The drill asks six fields out of short incident records, where seven field
+slots are **genuinely absent from the source**. Four information-equivalent
+arms: prose vs spec style, each with and without an explicit "write NOT_STATED
+if absent" escape hatch.
+
+**The pre-registered claim was a null.** Specs did not raise fabrication in
+general, and did not raise completeness or format compliance either — prose hit
+12/12 format and ~100% completeness unaided on both models. On a task this
+size, "use a spec" bought nothing on the metrics it is usually sold on.
+
+**What it did change is the shape of the absent value.** Under a spec the model
+answered absence with a sentence lifted from the source (`"Investigation is
+ongoing and no cause has been established yet."`) rather than a marker
+(`unknown`) — mean marker length 20.7 chars vs 11.5 under prose, across 5–7
+distinct spellings. Any parser downstream must handle every one of them. The
+escape hatch collapses that to 1–2 spellings, 6/7 and 7/7 canonical. So the
+hatch's value is not honesty, it is **machine-readability** — and it still
+leaks about one slot in seven.
+
+**The real D6 result is a single rule.** On 120b, the spec arm turned a record
+reading *"Nobody has yet worked out what triggered it"* into
+`root_cause: what triggered it` — a noun phrase lifted out of a statement of
+ignorance, which a parser reads as a stated cause. It reproduced in the repeat
+arm. Ablating one rule at a time:
+
+| arm | `root_cause` | fabrications |
+|---|---|---|
+| PROSE | `unknown` | 0 |
+| SPEC | `what triggered it` | 1 |
+| SPEC minus R4 (*every field MUST be present*) | `what triggered it` | 1 |
+| **SPEC minus R5 (*values MUST be taken from the record*)** | `undetermined` | **0** |
+
+R5 owns it. The rule that reads as an anti-hallucination guardrail is the rule
+that caused the hallucination: it forbids `unknown`, because `unknown` is not in
+the record, so the model reaches for the nearest available noun phrase. Dropping
+R5 also nearly halved marker verbosity (20.7 → 10.9 chars).
+
+> **D6's signature: a rule that forbids the honest answer.** Before adding a
+> MUST, ask what it makes unsayable. If the true answer is "this isn't here",
+> a spec must supply a way to say so, or it will get a wrong answer that
+> satisfies every rule.
+
+**Two instrument notes, both worth more than the result.**
+
+The first scorer anchored its absence regex at `^` and so counted `"Owner not
+recorded"` as an invented value. It printed *"SPEC fabricates 57%"* — a clean,
+plausible, entirely artefactual headline that matched the pre-registered
+prediction. Reading the raw dump showed **zero** fabrications in any arm. That
+is twice now (L5, D6) that this study's metric, not its models, was the weak
+point; raw output is checked by hand before any number is believed.
+
+Second, the control failed: `SPEC` vs `SPEC_repeat` at temp 0 were **not**
+byte-identical on either model, so single-run differences here carry noise. The
+R5 finding survives because it reproduced across the repeat arm and the
+ablation, not because temp 0 was trusted.
+
+**Reproducibility note:** L5's model, `llama-3.1-8b-instant`, no longer exists
+on Groq — that drill cannot be re-run as written. Groq also now sits behind
+Cloudflare, which 403s (error 1010) on Python's default urllib user agent; the
+drills send `User-Agent: curl/8.5.0`. Neither is an auth failure, and both look
+like one.
+
 `D6 — Over-constraint` is not from the literature. It comes from a parallel-agent experiment in the companion project, where two agents given non-jointly-satisfiable formatting requirements each silently dropped the other's.
 
 ## Install on mobile

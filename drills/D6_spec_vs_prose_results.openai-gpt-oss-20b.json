@@ -1,0 +1,941 @@
+{
+  "model": "openai/gpt-oss-20b",
+  "records": [
+    {
+      "text": "INC-1041 was raised on 3 March. Severity 2. The checkout service was returning 502s. Caused by an expired TLS certificate on the payment gateway. Assigned to Priya Raman.",
+      "gold": {
+        "root_cause": "expired TLS certificate",
+        "owner": "Priya Raman"
+      }
+    },
+    {
+      "text": "INC-1042, logged 4 March, severity 1, affecting the auth service. Investigation is ongoing and no cause has been established yet. Owned by Marcus Bell.",
+      "gold": {
+        "root_cause": null,
+        "owner": "Marcus Bell"
+      }
+    },
+    {
+      "text": "On 7 March a severity 3 issue, INC-1043, hit the reporting dashboard. A nightly ETL job had written duplicate rows. Owner: Dana Whitfield.",
+      "gold": {
+        "root_cause": "duplicate rows from nightly ETL",
+        "owner": "Dana Whitfield"
+      }
+    },
+    {
+      "text": "INC-1044 (9 March, severity 2) degraded the search index. Root cause was a mis-sized thread pool after the 8 March deploy. No owner has been assigned.",
+      "gold": {
+        "root_cause": "mis-sized thread pool",
+        "owner": null
+      }
+    },
+    {
+      "text": "Severity 4, INC-1045, 11 March, notifications service. Users saw duplicate emails. The team has not yet determined why. Ownership sits with Priya Raman.",
+      "gold": {
+        "root_cause": null,
+        "owner": "Priya Raman"
+      }
+    },
+    {
+      "text": "INC-1046 was opened 12 March against the billing service at severity 1. A schema migration dropped an index, causing full table scans. Marcus Bell is the owner.",
+      "gold": {
+        "root_cause": "schema migration dropped an index",
+        "owner": "Marcus Bell"
+      }
+    },
+    {
+      "text": "13 March, INC-1047, severity 3, affecting the mobile API. Cause: a third-party SDK update changed a default timeout. Owner not recorded.",
+      "gold": {
+        "root_cause": "third-party SDK timeout change",
+        "owner": null
+      }
+    },
+    {
+      "text": "INC-1048, severity 2, 15 March, the media transcoder. The postmortem is still open and the cause remains unknown. Assigned to Dana Whitfield.",
+      "gold": {
+        "root_cause": null,
+        "owner": "Dana Whitfield"
+      }
+    },
+    {
+      "text": "A severity 1 incident, INC-1049, on 16 March took down the session store. Redis ran out of memory under an unbounded key pattern. Owner: Priya Raman.",
+      "gold": {
+        "root_cause": "Redis OOM, unbounded keys",
+        "owner": "Priya Raman"
+      }
+    },
+    {
+      "text": "INC-1050 (18 March) hit the export service at severity 3. A malformed customer CSV crashed the parser. Owned by Marcus Bell.",
+      "gold": {
+        "root_cause": "malformed CSV crashed parser",
+        "owner": "Marcus Bell"
+      }
+    },
+    {
+      "text": "On 19 March, INC-1051, severity 2, the webhook dispatcher began retrying indefinitely. Nobody has yet worked out what triggered it, and the incident is currently unassigned.",
+      "gold": {
+        "root_cause": null,
+        "owner": null
+      }
+    },
+    {
+      "text": "INC-1052, 21 March, severity 4, affecting the admin console. A stale CDN cache served an old bundle. Dana Whitfield owns it.",
+      "gold": {
+        "root_cause": "stale CDN cache",
+        "owner": "Dana Whitfield"
+      }
+    }
+  ],
+  "results": {
+    "PROSE": {
+      "summary": {
+        "arm": "PROSE",
+        "completeness_pct": 100.0,
+        "format_ok": "12/12",
+        "absent_slots": 7,
+        "fabricated": 0,
+        "correctly_absent": 7,
+        "omitted_line": 0,
+        "fabrication_pct": 0.0,
+        "distinct_markers": 6,
+        "canonical_markers": "0/7",
+        "mean_marker_chars": 13.0,
+        "markers": [
+          "None",
+          "no cause has been established yet",
+          "not recorded",
+          "not yet determined",
+          "unassigned",
+          "unknown"
+        ]
+      },
+      "detail": [
+        {
+          "record": "INC-1041 was raised on 3 March. Severity",
+          "raw": "incident_id: INC-1041\ndate: 3 March\nseverity: 2\nsystem: checkout service\nroot_cause: expired TLS certificate on the payment gateway\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1042, logged 4 March, severity 1, af",
+          "raw": "incident_id: INC-1042\ndate: 4 March\nseverity: 1\nsystem: auth service\nroot_cause: no cause has been established yet\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 7 March a severity 3 issue, INC-1043,",
+          "raw": "incident_id: INC-1043\ndate: 7 March\nseverity: 3\nsystem: reporting dashboard\nroot_cause: nightly ETL job had written duplicate rows\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1044 (9 March, severity 2) degraded ",
+          "raw": "incident_id: INC-1044\ndate: 9 March\nseverity: 2\nsystem: search index\nroot_cause: mis-sized thread pool after the 8 March deploy\nowner: None",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "Severity 4, INC-1045, 11 March, notifica",
+          "raw": "incident_id: INC-1045\ndate: 11 March\nseverity: 4\nsystem: notifications service\nroot_cause: not yet determined\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1046 was opened 12 March against the",
+          "raw": "incident_id: INC-1046\ndate: 12 March\nseverity: 1\nsystem: billing service\nroot_cause: A schema migration dropped an index, causing full table scans.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "13 March, INC-1047, severity 3, affectin",
+          "raw": "incident_id: INC-1047\ndate: 13 March\nseverity: 3\nsystem: mobile API\nroot_cause: a third-party SDK update changed a default timeout\nowner: not recorded",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1048, severity 2, 15 March, the medi",
+          "raw": "incident_id: INC-1048\ndate: 15 March\nseverity: 2\nsystem: media transcoder\nroot_cause: unknown\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "A severity 1 incident, INC-1049, on 16 M",
+          "raw": "incident_id: INC-1049\ndate: 16 March\nseverity: 1\nsystem: session store\nroot_cause: Redis ran out of memory under an unbounded key pattern\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1050 (18 March) hit the export servi",
+          "raw": "incident_id: INC-1050\ndate: 18 March\nseverity: 3\nsystem: export service\nroot_cause: malformed customer CSV crashed the parser\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 19 March, INC-1051, severity 2, the w",
+          "raw": "incident_id: INC-1051\ndate: 19 March\nseverity: 2\nsystem: webhook dispatcher\nroot_cause: unknown\nowner: unassigned",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause",
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1052, 21 March, severity 4, affectin",
+          "raw": "incident_id: INC-1052\ndate: 21 March\nseverity: 4\nsystem: admin console\nroot_cause: stale CDN cache served an old bundle\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        }
+      ],
+      "fabrications": []
+    },
+    "PROSE_ESCAPE": {
+      "summary": {
+        "arm": "PROSE_ESCAPE",
+        "completeness_pct": 100.0,
+        "format_ok": "12/12",
+        "absent_slots": 7,
+        "fabricated": 0,
+        "correctly_absent": 7,
+        "omitted_line": 0,
+        "fabrication_pct": 0.0,
+        "distinct_markers": 2,
+        "canonical_markers": "6/7",
+        "mean_marker_chars": 10.7,
+        "markers": [
+          "NOT_STATED",
+          "remains unknown"
+        ]
+      },
+      "detail": [
+        {
+          "record": "INC-1041 was raised on 3 March. Severity",
+          "raw": "incident_id: INC-1041\ndate: 3 March\nseverity: 2\nsystem: checkout service\nroot_cause: expired TLS certificate on the payment gateway\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1042, logged 4 March, severity 1, af",
+          "raw": "incident_id: INC-1042\ndate: 4 March\nseverity: 1\nsystem: auth service\nroot_cause: NOT_STATED\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 7 March a severity 3 issue, INC-1043,",
+          "raw": "incident_id: INC-1043\ndate: 7 March\nseverity: 3\nsystem: reporting dashboard\nroot_cause: nightly ETL job had written duplicate rows\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1044 (9 March, severity 2) degraded ",
+          "raw": "incident_id: INC-1044\ndate: 9 March\nseverity: 2\nsystem: search index\nroot_cause: mis-sized thread pool after the 8 March deploy\nowner: NOT_STATED",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "Severity 4, INC-1045, 11 March, notifica",
+          "raw": "incident_id: INC-1045\ndate: 11 March\nseverity: 4\nsystem: notifications service\nroot_cause: NOT_STATED\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1046 was opened 12 March against the",
+          "raw": "incident_id: INC-1046\ndate: 12 March\nseverity: 1\nsystem: billing service\nroot_cause: A schema migration dropped an index, causing full table scans.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "13 March, INC-1047, severity 3, affectin",
+          "raw": "incident_id: INC-1047\ndate: 13 March\nseverity: 3\nsystem: mobile API\nroot_cause: a third-party SDK update changed a default timeout\nowner: NOT_STATED",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1048, severity 2, 15 March, the medi",
+          "raw": "incident_id: INC-1048\ndate: 15 March\nseverity: 2\nsystem: the media transcoder\nroot_cause: remains unknown\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "A severity 1 incident, INC-1049, on 16 M",
+          "raw": "incident_id: INC-1049\ndate: 16 March\nseverity: 1\nsystem: session store\nroot_cause: Redis ran out of memory under an unbounded key pattern\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1050 (18 March) hit the export servi",
+          "raw": "incident_id: INC-1050\ndate: 18 March\nseverity: 3\nsystem: export service\nroot_cause: malformed customer CSV crashed the parser\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 19 March, INC-1051, severity 2, the w",
+          "raw": "incident_id: INC-1051\ndate: 19 March\nseverity: 2\nsystem: webhook dispatcher\nroot_cause: NOT_STATED\nowner: NOT_STATED",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause",
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1052, 21 March, severity 4, affectin",
+          "raw": "incident_id: INC-1052\ndate: 21 March\nseverity: 4\nsystem: admin console\nroot_cause: stale CDN cache served an old bundle\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        }
+      ],
+      "fabrications": []
+    },
+    "SPEC": {
+      "summary": {
+        "arm": "SPEC",
+        "completeness_pct": 100.0,
+        "format_ok": "12/12",
+        "absent_slots": 7,
+        "fabricated": 0,
+        "correctly_absent": 7,
+        "omitted_line": 0,
+        "fabrication_pct": 0.0,
+        "distinct_markers": 7,
+        "canonical_markers": "0/7",
+        "mean_marker_chars": 26.4,
+        "markers": [
+          "Investigation is ongoing and no cause has been established yet.",
+          "No owner has been assigned",
+          "Nobody has yet worked out what triggered it",
+          "Owner not recorded",
+          "not yet determined",
+          "unassigned",
+          "unknown"
+        ]
+      },
+      "detail": [
+        {
+          "record": "INC-1041 was raised on 3 March. Severity",
+          "raw": "incident_id: INC-1041\ndate: 3 March\nseverity: 2\nsystem: checkout service\nroot_cause: expired TLS certificate on the payment gateway\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1042, logged 4 March, severity 1, af",
+          "raw": "incident_id: INC-1042\ndate: 4 March\nseverity: 1\nsystem: auth service\nroot_cause: Investigation is ongoing and no cause has been established yet.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 7 March a severity 3 issue, INC-1043,",
+          "raw": "incident_id: INC-1043\ndate: 7 March\nseverity: 3\nsystem: reporting dashboard\nroot_cause: nightly ETL job had written duplicate rows\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1044 (9 March, severity 2) degraded ",
+          "raw": "incident_id: INC-1044\ndate: 9 March\nseverity: 2\nsystem: search index\nroot_cause: mis-sized thread pool after the 8 March deploy\nowner: No owner has been assigned",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "Severity 4, INC-1045, 11 March, notifica",
+          "raw": "incident_id: INC-1045\ndate: 11 March\nseverity: 4\nsystem: notifications service\nroot_cause: not yet determined\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1046 was opened 12 March against the",
+          "raw": "incident_id: INC-1046\ndate: 12 March\nseverity: 1\nsystem: billing service\nroot_cause: A schema migration dropped an index, causing full table scans.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "13 March, INC-1047, severity 3, affectin",
+          "raw": "incident_id: INC-1047\ndate: 13 March\nseverity: 3\nsystem: mobile API\nroot_cause: a third-party SDK update changed a default timeout\nowner: Owner not recorded",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1048, severity 2, 15 March, the medi",
+          "raw": "incident_id: INC-1048\ndate: 15 March\nseverity: 2\nsystem: the media transcoder\nroot_cause: unknown\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "A severity 1 incident, INC-1049, on 16 M",
+          "raw": "incident_id: INC-1049\ndate: 16 March\nseverity: 1\nsystem: session store\nroot_cause: Redis ran out of memory under an unbounded key pattern\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1050 (18 March) hit the export servi",
+          "raw": "incident_id: INC-1050\ndate: 18 March\nseverity: 3\nsystem: export service\nroot_cause: malformed customer CSV crashed the parser\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 19 March, INC-1051, severity 2, the w",
+          "raw": "incident_id: INC-1051\ndate: 19 March\nseverity: 2\nsystem: webhook dispatcher\nroot_cause: Nobody has yet worked out what triggered it\nowner: unassigned",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause",
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1052, 21 March, severity 4, affectin",
+          "raw": "incident_id: INC-1052\ndate: 21 March\nseverity: 4\nsystem: admin console\nroot_cause: stale CDN cache served an old bundle\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        }
+      ],
+      "fabrications": []
+    },
+    "SPEC_ESCAPE": {
+      "summary": {
+        "arm": "SPEC_ESCAPE",
+        "completeness_pct": 100.0,
+        "format_ok": "12/12",
+        "absent_slots": 7,
+        "fabricated": 0,
+        "correctly_absent": 7,
+        "omitted_line": 0,
+        "fabrication_pct": 0.0,
+        "distinct_markers": 3,
+        "canonical_markers": "5/7",
+        "mean_marker_chars": 11.6,
+        "markers": [
+          "NOT_STATED",
+          "cause remains unknown",
+          "unassigned"
+        ]
+      },
+      "detail": [
+        {
+          "record": "INC-1041 was raised on 3 March. Severity",
+          "raw": "incident_id: INC-1041\ndate: 3 March\nseverity: 2\nsystem: checkout service\nroot_cause: expired TLS certificate on the payment gateway\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1042, logged 4 March, severity 1, af",
+          "raw": "incident_id: INC-1042\ndate: 4 March\nseverity: 1\nsystem: auth service\nroot_cause: NOT_STATED\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 7 March a severity 3 issue, INC-1043,",
+          "raw": "incident_id: INC-1043\ndate: 7 March\nseverity: 3\nsystem: reporting dashboard\nroot_cause: nightly ETL job had written duplicate rows\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1044 (9 March, severity 2) degraded ",
+          "raw": "incident_id: INC-1044\ndate: 9 March\nseverity: 2\nsystem: search index\nroot_cause: mis-sized thread pool after the 8 March deploy\nowner: NOT_STATED",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "Severity 4, INC-1045, 11 March, notifica",
+          "raw": "incident_id: INC-1045\ndate: 11 March\nseverity: 4\nsystem: notifications service\nroot_cause: NOT_STATED\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1046 was opened 12 March against the",
+          "raw": "incident_id: INC-1046\ndate: 12 March\nseverity: 1\nsystem: billing service\nroot_cause: A schema migration dropped an index, causing full table scans.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "13 March, INC-1047, severity 3, affectin",
+          "raw": "incident_id: INC-1047\ndate: 13 March\nseverity: 3\nsystem: mobile API\nroot_cause: a third-party SDK update changed a default timeout\nowner: NOT_STATED",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1048, severity 2, 15 March, the medi",
+          "raw": "incident_id: INC-1048\ndate: 15 March\nseverity: 2\nsystem: the media transcoder\nroot_cause: cause remains unknown\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "A severity 1 incident, INC-1049, on 16 M",
+          "raw": "incident_id: INC-1049\ndate: 16 March\nseverity: 1\nsystem: session store\nroot_cause: Redis ran out of memory under an unbounded key pattern.\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1050 (18 March) hit the export servi",
+          "raw": "incident_id: INC-1050\ndate: 18 March\nseverity: 3\nsystem: export service\nroot_cause: A malformed customer CSV crashed the parser.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 19 March, INC-1051, severity 2, the w",
+          "raw": "incident_id: INC-1051\ndate: 19 March\nseverity: 2\nsystem: webhook dispatcher\nroot_cause: NOT_STATED\nowner: unassigned",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause",
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1052, 21 March, severity 4, affectin",
+          "raw": "incident_id: INC-1052\ndate: 21 March\nseverity: 4\nsystem: admin console\nroot_cause: A stale CDN cache served an old bundle\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        }
+      ],
+      "fabrications": []
+    },
+    "SPEC_repeat": {
+      "summary": {
+        "arm": "SPEC_repeat",
+        "completeness_pct": 100.0,
+        "format_ok": "12/12",
+        "absent_slots": 7,
+        "fabricated": 0,
+        "correctly_absent": 7,
+        "omitted_line": 0,
+        "fabrication_pct": 0.0,
+        "distinct_markers": 7,
+        "canonical_markers": "0/7",
+        "mean_marker_chars": 29.1,
+        "markers": [
+          "Investigation is ongoing and no cause has been established yet.",
+          "No owner has been assigned.",
+          "Nobody has yet worked out what triggered it",
+          "Owner not recorded",
+          "The team has not yet determined why.",
+          "unassigned",
+          "unknown"
+        ]
+      },
+      "detail": [
+        {
+          "record": "INC-1041 was raised on 3 March. Severity",
+          "raw": "incident_id: INC-1041\ndate: 3 March\nseverity: 2\nsystem: checkout service\nroot_cause: expired TLS certificate on the payment gateway\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1042, logged 4 March, severity 1, af",
+          "raw": "incident_id: INC-1042\ndate: 4 March\nseverity: 1\nsystem: auth service\nroot_cause: Investigation is ongoing and no cause has been established yet.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 7 March a severity 3 issue, INC-1043,",
+          "raw": "incident_id: INC-1043\ndate: 7 March\nseverity: 3\nsystem: reporting dashboard\nroot_cause: nightly ETL job had written duplicate rows\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1044 (9 March, severity 2) degraded ",
+          "raw": "incident_id: INC-1044\ndate: 9 March\nseverity: 2\nsystem: search index\nroot_cause: mis-sized thread pool after the 8 March deploy.\nowner: No owner has been assigned.",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "Severity 4, INC-1045, 11 March, notifica",
+          "raw": "incident_id: INC-1045\ndate: 11 March\nseverity: 4\nsystem: notifications service\nroot_cause: The team has not yet determined why.\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1046 was opened 12 March against the",
+          "raw": "incident_id: INC-1046\ndate: 12 March\nseverity: 1\nsystem: billing service\nroot_cause: A schema migration dropped an index, causing full table scans.\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "13 March, INC-1047, severity 3, affectin",
+          "raw": "incident_id: INC-1047\ndate: 13 March\nseverity: 3\nsystem: mobile API\nroot_cause: a third-party SDK update changed a default timeout\nowner: Owner not recorded",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1048, severity 2, 15 March, the medi",
+          "raw": "incident_id: INC-1048\ndate: 15 March\nseverity: 2\nsystem: the media transcoder\nroot_cause: unknown\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "A severity 1 incident, INC-1049, on 16 M",
+          "raw": "incident_id: INC-1049\ndate: 16 March\nseverity: 1\nsystem: session store\nroot_cause: Redis ran out of memory under an unbounded key pattern\nowner: Priya Raman",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1050 (18 March) hit the export servi",
+          "raw": "incident_id: INC-1050\ndate: 18 March\nseverity: 3\nsystem: export service\nroot_cause: malformed customer CSV crashed the parser\nowner: Marcus Bell",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "On 19 March, INC-1051, severity 2, the w",
+          "raw": "incident_id: INC-1051\ndate: 19 March\nseverity: 2\nsystem: webhook dispatcher\nroot_cause: Nobody has yet worked out what triggered it\nowner: unassigned",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [
+              "root_cause",
+              "owner"
+            ],
+            "missing_line": []
+          }
+        },
+        {
+          "record": "INC-1052, 21 March, severity 4, affectin",
+          "raw": "incident_id: INC-1052\ndate: 21 March\nseverity: 4\nsystem: admin console\nroot_cause: stale CDN cache served an old bundle\nowner: Dana Whitfield",
+          "score": {
+            "present": 6,
+            "format_ok": true,
+            "fabricated": [],
+            "correctly_absent": [],
+            "missing_line": []
+          }
+        }
+      ],
+      "fabrications": []
+    }
+  }
+}
