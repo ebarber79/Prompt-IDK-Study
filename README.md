@@ -75,15 +75,43 @@ arm. Ablating one rule at a time:
 | SPEC minus R4 (*every field MUST be present*) | `what triggered it` | 1 |
 | **SPEC minus R5 (*values MUST be taken from the record*)** | `undetermined` | **0** |
 
-R5 owns it. The rule that reads as an anti-hallucination guardrail is the rule
-that caused the hallucination: it forbids `unknown`, because `unknown` is not in
-the record, so the model reaches for the nearest available noun phrase. Dropping
-R5 also nearly halved marker verbosity (20.7 → 10.9 chars).
+Within this model, R5 owns it: the rule that reads as an anti-hallucination
+guardrail is the one that caused the hallucination. It forbids `unknown`,
+because `unknown` is not in the record, so the model reaches for the nearest
+available noun phrase. Dropping R5 also nearly halved marker verbosity
+(20.7 → 10.9 chars).
+
+**Scope, stated plainly: this is one failure, on one of three models.**
+`gpt-oss-20b` produced zero fabrications in every arm, and so did
+`qwen3.6-27b`. Only `gpt-oss-120b` fell over, and only on one of seven absent
+slots — though it did so in the repeat arm too, and the ablation is clean, so
+it is a real effect rather than noise *within that model*. It is not a measured
+rate, and it is not shown to generalise.
+
+Comparing what each model quoted narrows the mechanism usefully. R5's pressure
+to take the value from the record is visible everywhere; whether it yields a
+false value depends on **how much of the negating clause survives extraction**:
+
+| model | `root_cause` under SPEC | negation survives? |
+|---|---|---|
+| qwen3.6-27b | `Nobody has yet worked out what triggered it` | yes — reads as absent |
+| gpt-oss-120b | `what triggered it` | **no — reads as a stated cause** |
+
+Both obeyed R5. One quoted the clause and stayed honest; the other extracted the
+noun phrase and stripped the "nobody has worked out" that carried the meaning.
+So the risk is not "specs cause lies", it is narrower and more useful:
 
 > **D6's signature: a rule that forbids the honest answer.** Before adding a
 > MUST, ask what it makes unsayable. If the true answer is "this isn't here",
-> a spec must supply a way to say so, or it will get a wrong answer that
-> satisfies every rule.
+> a spec must supply a way to say so — otherwise the model must satisfy the
+> rule from source text, and a short enough extraction drops the negation while
+> satisfying every rule.
+
+The qwen arms above are provisional: its ablation arms never ran (daily token
+cap), and with zero fabrications in its SPEC arm there was nothing for the
+ablation to remove, so completing them would not settle R5 either way. The run
+that would earn the claim is more negated-cause records against `gpt-oss-120b`,
+turning n=1 into a rate.
 
 **Two instrument notes, both worth more than the result.**
 

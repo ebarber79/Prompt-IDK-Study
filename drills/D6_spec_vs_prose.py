@@ -76,6 +76,20 @@ OUTCOME (2026-08-17, gpt-oss-20b and gpt-oss-120b, temp 0)
   The anti-hallucination-sounding rule is the one that forbids "unknown" and
   so forces a noun phrase out of a sentence that states ignorance.
 
+  SCOPE (added after the qwen run): that is ONE failure on ONE of three models.
+  20b and qwen3.6-27b fabricated nothing in any arm. Comparing what each model
+  quoted sharpens it -- qwen took the whole clause ("Nobody has yet worked out
+  what triggered it", negation intact, still honest) where 120b took the noun
+  phrase ("what triggered it", negation stripped). Both obeyed R5. So the claim
+  is not "specs cause lies" but "a MUST that forbids the honest answer forces
+  the value out of source text, and a short enough extraction drops the
+  negation". n=1; not a rate. The run that would earn it is more
+  negated-cause records against 120b.
+
+  qwen3.6-27b is INCOMPLETE: daily token cap (200k TPD) hit after four arms,
+  and its ablation arms could not have settled R5 anyway -- with zero
+  fabrications in its SPEC arm there is nothing to ablate away.
+
   INSTRUMENT: the first scorer anchored ABSENCE at ^ and reported "SPEC
   fabricates 57%". That number was an artifact -- it scored "Owner not
   recorded" as invented. Raw output is now hand-checked before any claim.
